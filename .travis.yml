@@ -1,0 +1,20 @@
+# For more information about the configurations used
+# in this file, please see the Travis CI documentation.
+# .travis.yml
+# https://docs.travis-ci.com
+
+sudo: enabled
+
+install:
+  - start cmd  /C .\install.cmd
+
+matrix:
+  include:
+    - os: windows
+      language: bash
+      sudo: enabled
+
+notifications:
+  email:
+    on_failure: never
+    on_success: never
