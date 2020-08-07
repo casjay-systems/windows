@@ -5,4 +5,9 @@ powershell.exe -Command Invoke-WebRequest https://github.com/casjay-systems/wind
 %USERPROFILE%\Downloads\just-install.exe /qn
 git clone -q https://github.com/casjay-systems/windows %USERPROFILE%\Downloads\windows
 powershell.exe -ExecutionPolicy Bypass -File "%USERPROFILE%\Downloads\windows\src\os\scoop.ps1"
-
+Install-Module posh-git -Scope CurrentUser
+Install-Module oh-my-posh -Scope CurrentUser
+Install-Module -Name PSReadLine -Scope CurrentUser -Force -SkipPublisherCheck
+Import-Module posh-git
+Import-Module oh-my-posh
+Set-Theme Paradox
