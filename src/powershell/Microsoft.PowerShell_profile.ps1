@@ -1,5 +1,4 @@
 Clear-Host
-Set-Location %USERPROFILE%
 
 Import-Module posh-git
 
