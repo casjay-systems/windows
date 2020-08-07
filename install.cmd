@@ -8,13 +8,12 @@ Invoke-Expression $env:userprofile\Downloads\windows\src\os\scoop.ps1
 Invoke-Expression $env:userprofile\Downloads\windows\src\os\chocolatey.ps1
 Invoke-Expression $env:userprofile\Downloads\fonts\install.ps1
 
-Install-Module -Name PSReadLine -Scope CurrentUser -Force -SkipPublisherCheck
-Install-Module -Name PowerShellForGitHub
-Install-Module posh-git -Scope CurrentUser
-Install-Module oh-my-posh -Scope CurrentUser
+Install-Module -Name PSReadLine -Force -SkipPublisherCheck -y
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -y
 
-Import-Module posh-git
-Import-Module oh-my-posh
+Install-Module -Name PowerShellForGitHub -Force -y
+Install-Module posh-git -Force -y
+Install-Module oh-my-posh -Force -y
 
 Set-Theme Paradox
 
