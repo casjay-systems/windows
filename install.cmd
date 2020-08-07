@@ -2,7 +2,7 @@
 color 1F
 echo.
 Set-ExecutionPolicy -Scope CurrentUser Unrestricted
-powershell.exe -Command Invoke-WebRequest https://github.com/casjay-systems/windows/raw/master/src/os/just-install.exe -o %USERPROFILE%\Downloads\just-install.exe
+powershell.exe %USERPROFILE%\Downloads\just-install.exe
 
 %USERPROFILE%\Downloads\just-install.exe /qn
 
