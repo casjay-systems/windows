@@ -1,6 +1,7 @@
-@echo off
+echo off
 color 1F
 echo.
+
 Set-ExecutionPolicy -Scope CurrentUser Unrestricted
 
 git clone -q https://github.com/powerline/fonts %USERPROFILE%\Downloads\fonts
