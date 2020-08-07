@@ -19,7 +19,7 @@ Install-Module -Name PSReadLine -Scope CurrentUser -Force -SkipPublisherCheck
 Import-Module posh-git
 Import-Module oh-my-posh
 
-Set-Theme Paradox
+Set-Theme Powerlevel10k-Classic
 
 choco install -y chocolateygui nvm nodejs
 
