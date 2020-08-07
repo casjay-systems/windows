@@ -5,10 +5,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 Start-Process git "clone -q https://github.com/powerline/fonts $env:userprofile\Downloads\fonts" -NoNewWindow -Wait
 Start-Process git "clone -q https://github.com/casjay-systems/windows $env:userprofile\Downloads\windows" -NoNewWindow -Wait
 
-Copy-Item -Path "$env:userprofile\Downloads\windows\src\git\*" -Destination "$env:userprofile" -Recurse -Force
-Copy-Item -Path "$env:userprofile\Downloads\windows\src\bash\*" -Destination "$env:userprofile" -Recurse -Force
-Copy-Item -Path "$env:userprofile\Downloads\windows\src\powershell\*" -Destination "$env:userprofile\Documents\PowerShell" -Recurse -Force
-Copy-Item -Path "$env:userprofile\Downloads\windows\src\powershell\*" -Destination "$env:userprofile\Documents\WindowsPowerShell" -Recurse -Force
+Copy-Item -Path "$env:userprofile\Downloads\windows\src\homedir\*" -Destination "$env:userprofile" -Recurse -Force
 
 Invoke-Expression $env:userprofile\Downloads\fonts\install.ps1
 Invoke-Expression $env:userprofile\Downloads\windows\src\os\scoop.ps1

@@ -1,23 +1,23 @@
 # Git aliases
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 [alias]
-a   = commit --amend
-br  = branch
-c   = commit
-ca  = !git add -A && git commit             # Commit all changes.
-co  = checkout
-cp  = cherry-pick
-d   = diff -- . ':!*package-lock.json' ':!*yarn.lock'
-dc  = diff --cached -- . ':!*package-lock.json' ':!*yarn.lock'
-f   = fetch
-g   = log --graph --pretty=custom           # Show custom graph.
-git = !exec git                             # Allow `$ git git git...`
-l   = log --pretty=custom                   # Show custom log.
-lc  = shortlog --email --numbered --summary # List contributors.
-p   = push
-r   = rebase
-s   = status
-w   = instaweb --httpd=webrick              # Start web-based visualizer.
+a = commit --amend
+br = branch
+c = commit
+ca = !git add -A && git commit # Commit all changes.
+co = checkout
+cp = cherry-pick
+d = diff -- . ':!*package-lock.json' ':!*yarn.lock'
+dc = diff --cached -- . ':!*package-lock.json' ':!*yarn.lock'
+f = fetch
+g = log --graph --pretty=custom            # Show custom graph.
+git = !exec git                            # Allow `$ git git git...`
+l = log --pretty=custom                    # Show custom log.
+lc = shortlog --email --numbered --summary # List contributors.
+p = push
+r = rebase
+s = status
+w = instaweb --httpd=webrick # Start web-based visualizer.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,7 +26,7 @@ mkbranch = "!f(){ git checkout -b ${1} && git push origin -u ${1}; };f"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-unfuck = "!f(){ git reset --hard origin/`git rev-parse --abbrev-ref HEAD`; rm -fv `git st | grep ^? | cut -d' '  -f2-`; }; f"
+unfuck = "!f(){ git reset --hard origin/$(git rev-parse --abbrev-ref HEAD); rm -fv $(git st | grep ^? | cut -d' ' -f2-); }; f"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # pull and update everything
@@ -59,9 +59,26 @@ ulc = "!f() { declare n=\"${1:-1}\"; git reset --soft \"HEAD~$n\"; }; f"
 
 cm = "!f() { git log --pretty=custom --decorate --date=short --grep=\"$1\"; }; f"
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # stow files
 
-stow = "!f() {git --git-dir="$HOME/Documents/dotfiles" --work-tree="$HOME" "$@" ; }; f" 
+stow = "!f() {git --git-dir="$HOME/Documents/dotfiles" --work-tree="$HOME" "$@" ; }; f"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Clone repo from github
+ghc = "!f() { git clone https://github.com/$1.git ~/Projects/github/$1; }; f"
+ghr = "!f() { git remote add $1 https://github.com/$2.git; }; f"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Clone repo from gitlab
+glc = "!f() { git clone https://gitlab.com/$1.git ~/Projects/gitlab/$1; }; f"
+glr = "!f() { git remote add $1 https://gitlab.com/$2.git; }; f"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Clone repo from a private git
+gpc = "!f() { git clone https://git.casjay.in/$1.git ~/Projects/casjay/$1; }; f"
+gpr = "!f() { git remote add $1 https://git.casjay.in/$2.git; }; f"
+#
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Credit an author on the latest commit.
@@ -92,7 +109,10 @@ ignore = "!f() { IFS=","; curl -L -s "https://www.gitignore.io/api/$*" | tee .gi
 mpr = "!f() { \
     declare currentBranch=\"$(git symbolic-ref --short HEAD)\"; \
     declare branch=\"${2:-$currentBranch}\"; \
-    if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
+    if [ $(
+  printf \"%s\" \"$1\" | grep '^[0-9]\\+$' >/dev/null
+  printf $?
+) -eq 0 ]; then \
         git fetch origin refs/pull/$1/head:pr/$1 && \
         git checkout -B $branch && \
         git rebase $branch pr/$1 && \
@@ -106,7 +126,7 @@ mpr = "!f() { \
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # chart: show a summary chart of activity per author.
 
-  chart = "!f() { \
+chart = "!f() { \
     git log \
     --format=oneline \
     --format=\"%aE %at\" \
@@ -146,60 +166,60 @@ mpr = "!f() { \
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Show a specific format string and its number of log entries
 
-  log-of-format-and-count = "!f() { format=\"$1\"; shift; git log $@ --format=oneline --format="$format" | awk '{a[$0]++}END{for(i in a){print i, a[i], int((a[i]/NR)*100) \"%\"}}' | sort; }; f"
-  log-of-count-and-format = "!f() { format=\"$1\"; shift; git log $@ --format=oneline --format="$format" | awk '{a[$0]++}END{for(i in a){print a[i], int((a[i]/NR)*100) \"%\", i}}' | sort -nr; }; f"
+log-of-format-and-count = "!f() { format=\"$1\"; shift; git log $@ --format=oneline --format="$format" | awk '{a[$0]++}END{for(i in a){print i, a[i], int((a[i]/NR)*100) \"%\"}}' | sort; }; f"
+log-of-count-and-format = "!f() { format=\"$1\"; shift; git log $@ --format=oneline --format="$format" | awk '{a[$0]++}END{for(i in a){print a[i], int((a[i]/NR)*100) \"%\", i}}' | sort -nr; }; f"
 
-  # Show the number of log entries by a specific format string and date format string
-  log-of-format-and-count-with-date = "!f() { format=\"$1\"; shift; date_format=\"$1\"; shift; git log $@ --format=oneline --format=\"$format\" --date=format:\"$date_format\" | awk '{a[$0]++}END{for(i in a){print i, a[i], int((a[i]/NR)*100) \"%\"}}' | sort -r; }; f"
-  log-of-count-and-format-with-date = "!f() { format=\"$1\"; shift; date_format=\"$1\"; shift; git log $@ --format=oneline --format=\"$format\" --date=format:\"$date_format\" | awk '{a[$0]++}END{for(i in a){print a[i], int((a[i]/NR)*100) \"%\", i}}' | sort -nr; }; f"
+# Show the number of log entries by a specific format string and date format string
+log-of-format-and-count-with-date = "!f() { format=\"$1\"; shift; date_format=\"$1\"; shift; git log $@ --format=oneline --format=\"$format\" --date=format:\"$date_format\" | awk '{a[$0]++}END{for(i in a){print i, a[i], int((a[i]/NR)*100) \"%\"}}' | sort -r; }; f"
+log-of-count-and-format-with-date = "!f() { format=\"$1\"; shift; date_format=\"$1\"; shift; git log $@ --format=oneline --format=\"$format\" --date=format:\"$date_format\" | awk '{a[$0]++}END{for(i in a){print a[i], int((a[i]/NR)*100) \"%\", i}}' | sort -nr; }; f"
 
-  # Show the number of log items by email
-  log-of-email-and-count         = "!f() { git log-of-format-and-count \"%aE\" $@; }; f"
-  log-of-count-and-email         = "!f() { git log-of-count-and-format \"%aE\" $@; }; f"
+# Show the number of log items by email
+log-of-email-and-count = "!f() { git log-of-format-and-count \"%aE\" $@; }; f"
+log-of-count-and-email = "!f() { git log-of-count-and-format \"%aE\" $@; }; f"
 
-  # Show the number of log items by hour
-  log-of-hour-and-count          = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m-%dT%H\" $@ ; }; f"
-  log-of-count-and-hour          = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m-%dT%H\" $@ ; }; f"
+# Show the number of log items by hour
+log-of-hour-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m-%dT%H\" $@ ; }; f"
+log-of-count-and-hour = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m-%dT%H\" $@ ; }; f"
 
-  # Show the number of log items by day
-  log-of-day-and-count           = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m-%d\" $@ ; }; f"
-  log-of-count-and-day           = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m-%d\" $@ ; }; f"
+# Show the number of log items by day
+log-of-day-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m-%d\" $@ ; }; f"
+log-of-count-and-day = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m-%d\" $@ ; }; f"
 
-  # Show the number of log items by week
-  log-of-week-and-count          = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y#%V\" $@; }; f"
-  log-of-count-and-week          = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y#%V\" $@; }; f"
+# Show the number of log items by week
+log-of-week-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y#%V\" $@; }; f"
+log-of-count-and-week = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y#%V\" $@; }; f"
 
-  # Show the number of log items by month
-  log-of-month-and-count         = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m\" $@ ; }; f"
-  log-of-count-and-month         = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m\" $@ ; }; f"
+# Show the number of log items by month
+log-of-month-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y-%m\" $@ ; }; f"
+log-of-count-and-month = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y-%m\" $@ ; }; f"
 
-  # Show the number of log items by year
-  log-of-year-and-count          = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y\" $@ ; }; f"
-  log-of-count-and-year          = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y\" $@ ; }; f"
+# Show the number of log items by year
+log-of-year-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%Y\" $@ ; }; f"
+log-of-count-and-year = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%Y\" $@ ; }; f"
 
-  # Show the number of log items by hour of day
-  log-of-hour-of-day-and-count   = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%H\" $@; }; f"
-  log-of-count-and-hour-of-day   = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%H\" $@; }; f"
+# Show the number of log items by hour of day
+log-of-hour-of-day-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%H\" $@; }; f"
+log-of-count-and-hour-of-day = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%H\" $@; }; f"
 
-  # Show the number of log items by day of week
-  log-of-day-of-week-and-count   = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%u\" $@; }; f"
-  log-of-count-and-day-of-week   = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%u\" $@; }; f"
+# Show the number of log items by day of week
+log-of-day-of-week-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%u\" $@; }; f"
+log-of-count-and-day-of-week = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%u\" $@; }; f"
 
-  # Show the number of log items by week of year
-  log-of-week-of-year-and-count  = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%V\" $@; }; f"
-  log-of-count-and-week-of-year  = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%V\" $@; }; f"
+# Show the number of log items by week of year
+log-of-week-of-year-and-count = "!f() { git log-of-format-and-count-with-date \"%ad\" \"%V\" $@; }; f"
+log-of-count-and-week-of-year = "!f() { git log-of-count-and-format-with-date \"%ad\" \"%V\" $@; }; f"
 
-  # TODO
-  log-refs = log --all --graph --decorate --oneline --simplify-by-decoration --no-merges
-  log-timeline = log --format='%h %an %ar - %s'
-  log-local = log --oneline origin..HEAD
-  log-fetched = log --oneline HEAD..origin/master
+# TODO
+log-refs = log --all --graph --decorate --oneline --simplify-by-decoration --no-merges
+log-timeline = log --format='%h %an %ar - %s'
+log-local = log --oneline origin..HEAD
+log-fetched = log --oneline HEAD..origin/master
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # summary: print a helpful summary of some typical metrics
 
-  churn = !"f() { git log --all --find-copies --find-renames --name-only --format='format:' \"$@\" | awk 'NF{a[$0]++}END{for(i in a){print a[i], i}}' | sort -rn;};f"
-  summary = "!f() { \
+churn = !"f() { git log --all --find-copies --find-renames --name-only --format='format:' \"$@\" | awk 'NF{a[$0]++}END{for(i in a){print a[i], i}}' | sort -rn;};f"
+summary = "!f() { \
     printf \"Summary of this branch...\n\"; \
     printf \"%s\n\" $(git rev-parse --abbrev-ref HEAD); \
     printf \"%s first commit timestamp\n\" $(git log --date-order --format=%cI | tail -1); \
@@ -209,8 +229,8 @@ mpr = "!f() { \
     printf \"%d tag count\n\" $(git tag | wc -l); \
     printf \"%d author count\n\" $(git log --format=oneline --format=\"%aE\" | awk '{a[$0]=1}END{for(i in a){n++;} print n}'); \
     printf \"%d committer count\n\" $(git log --format=oneline --format=\"%cE\" | awk '{a[$0]=1}END{for(i in a){n++;} print n}'); \
-    printf \"%d local branch count\n\" $(git branch | grep -v \" -> \" | wc -l); \
-    printf \"%d remote branch count\n\" $(git branch -r | grep -v \" -> \" | wc -l); \
+    printf \"%d local branch count\n\" $(git branch | grep -v \" - >\" | wc -l); \
+    printf \"%d remote branch count\n\" $(git branch -r | grep -v \" - >\" | wc -l); \
     printf \"\nSummary of this directory...\n\"; \
     printf \"%s\n\" $(pwd); \
     printf \"%d file count via git ls-files\n\" $(git ls-files | wc -l); \

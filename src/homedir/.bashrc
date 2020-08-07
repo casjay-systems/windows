@@ -3,13 +3,12 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # If not running interactively, don't do anything
-[[ $- != *i*  ]] && return
+[[ $- != *i* ]] && return
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Source System Bash
 
-#Fedora/Redhat/CentOS
 if [ -f /.bashrc ]; then
     source /etc/bashrc
 fi
@@ -34,7 +33,6 @@ fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Source additional bash scripts
-
 
 test -r $HOME/.dircolors && eval "$(dircolors $HOME/.dircolors)"
 
