@@ -1,6 +1,3 @@
-echo off
-color 1F
-echo.
 
 Set-ExecutionPolicy -Scope CurrentUser Unrestricted
 
