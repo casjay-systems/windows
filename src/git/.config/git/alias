@@ -59,6 +59,10 @@ ulc = "!f() { declare n=\"${1:-1}\"; git reset --soft \"HEAD~$n\"; }; f"
 
 cm = "!f() { git log --pretty=custom --decorate --date=short --grep=\"$1\"; }; f"
 
+# stow files
+
+stow = "!f() {git --git-dir="$HOME/Documents/dotfiles" --work-tree="$HOME" "$@" ; }; f" 
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Credit an author on the latest commit.
 
