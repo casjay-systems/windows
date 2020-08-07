@@ -13,6 +13,7 @@ powershell.exe -ExecutionPolicy Bypass -File "%USERPROFILE%\Downloads\windows\sr
 powershell.exe -ExecutionPolicy Bypass -File "%USERPROFILE%\Downloads\windows\src\os\chocolatey.ps1"
 powershell.exe -ExecutionPolicy Bypass -File "%USERPROFILE%\Downloads\fonts\install.ps1"
 
+Install-Module -Name PowerShellForGitHub
 Install-Module posh-git -Scope CurrentUser
 Install-Module oh-my-posh -Scope CurrentUser
 Install-Module -Name PSReadLine -Scope CurrentUser -Force -SkipPublisherCheck
@@ -20,6 +21,6 @@ Install-Module -Name PSReadLine -Scope CurrentUser -Force -SkipPublisherCheck
 Import-Module posh-git
 Import-Module oh-my-posh
 
-Set-Theme Powerlevel10k-Classic
+Set-Theme Paradox
 
 nvm install node@13.12.0
