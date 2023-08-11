@@ -3,7 +3,7 @@
 #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # @Author      : Jason
-# @Contact     : casjaysdev@casjay.net
+# @Contact     : casjaysdev@casjay.pro
 # @File        : cheat.sh
 # @Created     : Wed, Aug 05, 2020, 02:00 EST
 # @License     : WTFPL

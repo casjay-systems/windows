@@ -6,7 +6,7 @@ export SUDO_PROMPT="$(printf "\t\t\033[1;31m")[sudo]$(printf "\033[1;36m") passw
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # @Author      : Jason
-# @Contact     : casjaysdev@casjay.net
+# @Contact     : casjaysdev@casjay.pro
 # @File        : install
 # @Created     : Wed, Aug 05, 2020, 02:00 EST
 # @License     : WTFPL
